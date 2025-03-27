@@ -25,13 +25,13 @@
 			degree: 'Master of Science in Computer Science',
 			institution: 'University of Texas at Austin',
 			image: '/uta.png',
-			period: 'Jan2025 - Aug 2026'
+			period: 'Jan 2025 - Aug 2026'
 		},
 		{
 			degree: 'Bachelor of Science in Computer Science',
 			institution: 'University of Washington',
 			image: '/uw.png',
-			period: 'Sep 2021 - Dec2023'
+			period: 'Sep 2021 - Dec 2023'
 		}
 	];
 
@@ -67,8 +67,8 @@
 				complex problems and optimizing performance.
 			</p>
 			<p class="bio">
-				Currently pursuing my Master’s in Computer Science at UT Austin online and based in Seattle,
-				WA. I’m eager to continue learning and growing as an engineer.
+				Currently pursuing my Master's in Computer Science at UT Austin online and based in Seattle,
+				WA. I'm eager to continue learning and growing as an engineer.
 			</p>
 			<a href="/resume.pdf" class="download-resume" download>Download Resume</a>
 		</div>
@@ -113,7 +113,15 @@
 					</div>
 					<div class="experience-content">
 						<h3 class="experience-title">{experience.title}</h3>
-						<p class="company-name">{experience.company}</p>
+						<p class="company-name">
+							{#if experience.company === 'StudioTuko'}
+								<a href="https://tuko.studio/" target="_blank" rel="noopener noreferrer"
+									>{experience.company}</a
+								>
+							{:else}
+								{experience.company}
+							{/if}
+						</p>
 						<p class="period">{experience.period}</p>
 						<p class="description">{experience.description}</p>
 					</div>
