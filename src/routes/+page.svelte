@@ -31,14 +31,15 @@
 		<div class="max-w-2xl">
 			<h1 class="hero-title">Kevin Khuu</h1>
 			<p class="hero-paragraph mb-8 text-lg">
-				I'm a passionate software engineer with expertise in web development. I'm currently a
-				master's student at the University of Austin in Texas for computer science. I graduated from
-				the University of Washington with a bachelor's degree in Computer Science.
+				I'm an aspiring software engineer with a strong foundation in full-stack development,
+				distributed systems, and artificial intelligence. I have experience working on real-time web
+				applications, AI training, and game development, applying my skills across web, backend, and
+				game engines. Passionate about building scalable and efficient software, I enjoy tackling
+				complex problems and optimizing performance.
 			</p>
 			<p class="hero-paragraph mb-8 text-lg">
-				I love building elegant, user-friendly applications that solve real-world problems. With a
-				strong foundation in both frontend and backend technologies, I create seamless digital
-				experiences that delight users.
+				Currently pursuing my Master’s in Computer Science at UT Austin online and based in Seattle,
+				WA. I’m eager to continue learning and growing as an engineer.
 			</p>
 			<div class="flex gap-4">
 				<a href="/about" class="btn btn-outline btn-lg">About Me</a>

@@ -60,12 +60,15 @@
 		<div class="hero-content">
 			<!-- <h2 class="love-title">I <span class="heart">❤️</span> to build things</h2> -->
 			<p class="bio">
-				I am a proficient full-stack web developer specializing in blockchain and artificial
-				intelligence (AI) with 8 years of experience. I excel in crafting secure, scalable web
-				applications that leverage blockchain for decentralized solutions. I integrate AI
-				technologies for advanced analytics and machine learning, enhancing user interaction and
-				operational efficiency. My passion lies in delivering innovative, cutting-edge solutions
-				that drive technological advancement and business success.
+				I'm an aspiring software engineer with a strong foundation in full-stack development,
+				distributed systems, and artificial intelligence. I have experience working on real-time web
+				applications, AI training, and game development, applying my skills across web, backend, and
+				game engines. Passionate about building scalable and efficient software, I enjoy tackling
+				complex problems and optimizing performance.
+			</p>
+			<p class="bio">
+				Currently pursuing my Master’s in Computer Science at UT Austin online and based in Seattle,
+				WA. I’m eager to continue learning and growing as an engineer.
 			</p>
 			<a href="/resume.pdf" class="download-resume" download>Download Resume</a>
 		</div>
