@@ -2,6 +2,16 @@
 	// Project data
 	const projects = [
 		{
+			id: 0,
+			title: 'Digitask',
+			description:
+				'Full-stack web application that combines task management with virtual pet gamification to increase user engagement and productivity. Features real-time updates, user authentication, and interactive reward systems',
+			image: '/digitask.png',
+			technologies: ['React', 'Tailwind CSS', 'Node.js', 'Typescript', 'Supabase (PostgreSQL)'],
+			githubUrl: 'https://github.com/kkhuu131/digitask',
+			liveUrl: 'https://digitask-pi.vercel.app'
+		},
+		{
 			id: 1,
 			title: 'ValStocks',
 			description:

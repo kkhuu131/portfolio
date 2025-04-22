@@ -2,20 +2,20 @@
 	// Sample project data
 	const featuredProjects = [
 		{
+			id: 0,
+			title: 'Digitask',
+			description:
+				'Full-stack web application that combines task management with virtual pet gamification to increase user engagement and productivity.',
+			image: '/digitask.png',
+			tags: ['Typescript', 'Supabase', 'React', 'PostgreSQL', 'Vite']
+		},
+		{
 			id: 1,
 			title: 'ValStocks',
 			description:
 				'A full-stack stock simulation platform built with React, Next.js, Node.js, and Supabase.',
 			image: '/valstocks.png',
 			tags: ['React', 'Next.js', 'Node.js', 'Typescript', 'Supabase']
-		},
-		{
-			id: 2,
-			title: 'UW Campus Pathfinder',
-			description:
-				'A navigation web app for finding the shortest path between two points on the University of Washington campus.',
-			image: '/uwpathfinder.png',
-			tags: ['Typescript', 'Firebase', 'React', 'Java Spark', 'Java']
 		}
 	];
 </script>
