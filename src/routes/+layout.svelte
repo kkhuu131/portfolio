@@ -1,9 +1,13 @@
 <script lang="ts">
 	import '../app.css';
 	import { onMount } from 'svelte';
+	import { page } from '$app/stores';
 
-	let { children } = $props();
-	let isDarkMode = false;
+let { children } = $props();
+let isDarkMode = $state(false);
+
+let currentPath = $derived($page.url.pathname);
+let isDesktopRoute = $derived(currentPath === '/');
 
 	onMount(() => {
 		// Check if user has a theme preference stored
@@ -24,8 +28,9 @@
 	};
 </script>
 
-<div class="portfolio-container">
-	<header class="navbar">
+<div class="portfolio-container" class:is-desktop={isDesktopRoute}>
+    {#if !isDesktopRoute}
+    <header class="navbar">
 		<div class="navbar-container">
 			<div class="navbar-start">
 				<a href="/" class="logo">Portfolio</a>
@@ -76,7 +81,7 @@
 							/>
 						</svg>
 					</a>
-					<button on:click={handleToggleTheme} class="theme-toggle" aria-label="Toggle theme">
+                    <button onclick={handleToggleTheme} class="theme-toggle" aria-label="Toggle theme">
 						{#if isDarkMode}
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
@@ -106,22 +111,30 @@
 				</div>
 			</div>
 		</div>
-	</header>
+    </header>
+    {/if}
 
-	<main class="main-content container-narrow">
+    <main class="main-content" class:container-narrow={!isDesktopRoute} class:is-desktop={isDesktopRoute}>
 		{@render children()}
-		<div class="bottom-spacer"></div>
+        {#if !isDesktopRoute}
+        <div class="bottom-spacer"></div>
+        {/if}
 	</main>
 </div>
 
 <style>
 	/* Basic layout */
-	.portfolio-container {
+    .portfolio-container {
 		display: flex;
 		flex-direction: column;
 		min-height: 100vh;
 		background-color: white;
 	}
+
+    .portfolio-container.is-desktop {
+        min-height: 100dvh;
+        background: #0b1220;
+    }
 
 	/* Navbar styling */
 	.navbar {
@@ -203,7 +216,7 @@
 	}
 
 	/* Main content */
-	.main-content {
+    .main-content {
 		flex-grow: 1;
 		max-width: 1200px;
 		width: 100%;
@@ -211,19 +224,25 @@
 		padding: 2rem 1rem;
 	}
 
-	/* Footer */
-	.footer {
-		background-color: #f3f4f6;
-		padding: 2.5rem 0;
-		text-align: center;
-		color: #4b5563;
-	}
+    .main-content.is-desktop {
+        max-width: none;
+        padding: 0;
+        margin: 0;
+        width: 100vw;
+        height: 100dvh;
+    }
+
+    /* Footer removed (not used) */
 
 	/* Dark mode */
-	:global(html[data-theme='dark']) .portfolio-container {
+    :global(html[data-theme='dark']) .portfolio-container {
 		background-color: #1f2937;
 		color: #f9fafb;
 	}
+
+    :global(html[data-theme='dark']) .portfolio-container.is-desktop {
+        background-color: #0b1220;
+    }
 
 	:global(html[data-theme='dark']) .navbar {
 		background-color: #111827;
@@ -243,8 +262,5 @@
 		background-color: #374151;
 	}
 
-	:global(html[data-theme='dark']) .footer {
-		background-color: #111827;
-		color: #d1d5db;
-	}
+    /* Footer dark mode removed (not used) */
 </style>

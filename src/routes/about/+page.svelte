@@ -1,41 +1,6 @@
 <script lang="ts">
-	// Experience data
-	const experiences = [
-		{
-			title: 'Software Engineer - AI Training',
-			company: 'DataAnnotation',
-			period: 'Jun 2024 - Jan 2025 · 6 months',
-			image: '/dataannotation.png',
-			description:
-				'At DataAnnotation, I collaborated on AI training projects by providing feedback and improving machine learning model outputs. I applied software engineering practices to test and optimize tasks in Python, React, and Javascript.'
-		},
-		{
-			title: 'Software Developer',
-			company: 'StudioTuko',
-			period: 'Jan 2024 - Current · 1 year 2 months',
-			image: '/studiotuko.png',
-			description:
-				'At StudioTuko, I lead a small team of developers to develop and publish an indie game. I designed and implemented game mechanics and systems, and worked on the UI/UX design.'
-		}
-	];
-
-	// Education data
-	const education = [
-		{
-			degree: 'Master of Science in Computer Science',
-			institution: 'University of Texas at Austin',
-			image: '/uta.png',
-			period: 'Jan 2025 - Aug 2026'
-		},
-		{
-			degree: 'Bachelor of Science in Computer Science',
-			institution: 'University of Washington',
-			image: '/uw.png',
-			period: 'Sep 2021 - Dec 2023'
-		}
-	];
-
-	// Tech stack data
+    import { experiences, education } from '../../lib/desktop/apps/AboutData';
+    // Tech stack data
 	const techStack = {
 		experience: '1 year',
 		location: 'Seattle, WA',
@@ -53,7 +18,7 @@
 	<meta name="description" content="About Kevin Khuu - Software Engineer" />
 </svelte:head>
 
-<div class="about-container">
+<div class="about-container os-glass">
 	<h1 class="about-title">About Me</h1>
 
 	<div class="hero-section">
@@ -218,18 +183,7 @@
 		flex: 1;
 	}
 
-	.love-title {
-		font-size: 1.75rem;
-		font-weight: 600;
-		margin-bottom: 1rem;
-		display: flex;
-		align-items: center;
-		gap: 0.5rem;
-	}
-
-	.heart {
-		color: #ef4444;
-	}
+    /* removed unused styles */
 
 	.bio {
 		line-height: 1.6;
@@ -306,14 +260,16 @@
 		gap: 1.5rem;
 	}
 
-	.experience-card {
-		display: flex;
-		gap: 1rem;
-		padding: 1rem;
-		border-radius: 0.5rem;
-		background-color: white;
-		border: 1px solid #e5e7eb;
-	}
+    .experience-card {
+        display: flex;
+        gap: 1rem;
+        padding: 1rem;
+        border-radius: 12px;
+        background-color: rgba(255,255,255,0.06);
+        border: 1px solid rgba(255,255,255,0.12);
+        backdrop-filter: blur(12px);
+        box-shadow: 0 14px 28px rgba(0,0,0,0.2);
+    }
 
 	.company-logo {
 		flex-shrink: 0;
@@ -378,9 +334,7 @@
 		color: #4b5563;
 	}
 
-	.interests-section {
-		line-height: 1.6;
-	}
+    /* removed unused styles */
 
 	.education-section {
 		display: flex;
@@ -389,14 +343,16 @@
 		margin-top: 2rem;
 	}
 
-	.education-card {
-		display: flex;
-		gap: 1rem;
-		padding: 1rem;
-		border-radius: 0.5rem;
-		background-color: white;
-		border: 1px solid #e5e7eb;
-	}
+    .education-card {
+        display: flex;
+        gap: 1rem;
+        padding: 1rem;
+        border-radius: 12px;
+        background-color: rgba(255,255,255,0.06);
+        border: 1px solid rgba(255,255,255,0.12);
+        backdrop-filter: blur(12px);
+        box-shadow: 0 14px 28px rgba(0,0,0,0.2);
+    }
 
 	.institution-logo {
 		flex-shrink: 0;
@@ -440,10 +396,11 @@
 		border-color: #4b5563;
 	}
 
-	:global(html[data-theme='dark']) .experience-card {
-		background-color: #1f2937;
-		border-color: #4b5563;
-	}
+    :global(html[data-theme='dark']) .experience-card {
+        background-color: rgba(17,24,39,0.65);
+        border-color: rgba(255,255,255,0.12);
+        backdrop-filter: blur(12px);
+    }
 
 	:global(html[data-theme='dark']) .company-name {
 		color: #9ca3af;
@@ -462,10 +419,11 @@
 		color: #60a5fa;
 	}
 
-	:global(html[data-theme='dark']) .education-card {
-		background-color: #1f2937;
-		border-color: #4b5563;
-	}
+    :global(html[data-theme='dark']) .education-card {
+        background-color: rgba(17,24,39,0.65);
+        border-color: rgba(255,255,255,0.12);
+        backdrop-filter: blur(12px);
+    }
 
 	:global(html[data-theme='dark']) .institution-name {
 		color: #9ca3af;

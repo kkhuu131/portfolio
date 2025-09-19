@@ -6,7 +6,7 @@
 
 /* Base styles */
 body {
-	font-family: 'Inter', sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Inter', 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', Arial, sans-serif;
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
@@ -18,7 +18,7 @@ h3,
 h4,
 h5,
 h6 {
-	font-family: 'Inter', sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 	font-weight: 600;
 	margin-top: 0;
 }
@@ -398,3 +398,11 @@ html[data-theme='dark'] .tech-tag {
 	background-color: #374151;
 	color: #e5e7eb;
 }
+
+/* OS glass helpers for embedded pages */
+.os-glass {
+	color: #e5e7eb;
+}
+.os-glass h1, .os-glass h2, .os-glass h3 { color: #f3f4f6; }
+.os-glass a { color: #93c5fd; }
+.os-glass .projects-title, .os-glass .about-title { color: #f3f4f6; }

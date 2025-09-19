@@ -56,7 +56,7 @@
 	<meta name="description" content="Projects by Kevin Khuu" />
 </svelte:head>
 
-<div class="projects-container">
+<div class="projects-container os-glass">
 	<h1 class="projects-title">Projects</h1>
 
 	{#each projects as project}
@@ -145,16 +145,18 @@
 		margin-bottom: 2rem;
 	}
 
-	.project-card {
-		display: flex;
-		flex-direction: column;
-		margin-bottom: 3rem;
-		border-radius: 0.5rem;
-		overflow: hidden;
-		border: 1px solid #d1d5db;
-		background-color: white;
-		position: relative;
-	}
+    .project-card {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 3rem;
+        border-radius: 12px;
+        overflow: hidden;
+        border: 1px solid rgba(255,255,255,0.12);
+        background-color: rgba(255,255,255,0.06);
+        position: relative;
+        backdrop-filter: blur(12px);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+    }
 
 	.project-image-wrapper {
 		width: 100%;
@@ -206,10 +208,11 @@
 	}
 
 	/* Dark mode styles */
-	:global(html[data-theme='dark']) .project-card {
-		background-color: #1f2937;
-		border-color: #4b5563;
-	}
+    :global(html[data-theme='dark']) .project-card {
+        background-color: rgba(17,24,39,0.65);
+        border-color: rgba(255,255,255,0.12);
+        backdrop-filter: blur(12px);
+    }
 
 	:global(html[data-theme='dark']) .project-title {
 		color: #f9fafb;
