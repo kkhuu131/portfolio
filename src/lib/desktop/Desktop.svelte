@@ -120,16 +120,15 @@ onMount(() => {
 .classic-link {
 	position: absolute;
 	right: 16px;
-	bottom: 16px;
+	bottom: 150px;
 	padding: 8px 12px;
 	border-radius: 10px;
 	border: 1px solid rgba(255,255,255,0.15);
-	background: rgba(255,255,255,0.04);
+	background: rgba(0,0,0,0.08); backdrop-filter: blur(2px);
 	color: #e5e7eb;
 	text-decoration: none;
 }
 
-/* removed wallpaper toggle */
 </style>
 
 
