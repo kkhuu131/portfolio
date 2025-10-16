@@ -20,6 +20,8 @@ import { education } from '../../lib/desktop/apps/AboutData';
                     <h3 class="degree-title">{edu.degree}</h3>
                     <p class="institution-name">{edu.institution}</p>
                     <p class="period">{edu.period}</p>
+                    <p class="gpa">GPA: {edu.gpa}</p>
+                    <p class="courses">Courses: {edu.courses.join(', ')}</p>
                 </div>
             </div>
         {/each}
@@ -37,6 +39,8 @@ import { education } from '../../lib/desktop/apps/AboutData';
 .degree-title { font-weight: 600; margin-bottom: 0.25rem; }
 .institution-name { color: #9ca3af; margin-bottom: 0.25rem; }
 .period { color: #9ca3af; font-size: 0.875rem; }
+.gpa { color: #9ca3af; font-size: 0.875rem; }
+.courses { color: #9ca3af; font-size: 0.875rem; }
 </style>
 
 

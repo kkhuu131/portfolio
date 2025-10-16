@@ -2,14 +2,14 @@
     import { experiences, education } from '../../lib/desktop/apps/AboutData';
     // Tech stack data
 	const techStack = {
-		experience: '1 year',
 		location: 'Seattle, WA',
 		email: 'kkhuu131@gmail.com',
 		github: 'kkhuu131',
+		linkedin: 'kevinkhuu21',
 		frontend: ['TypeScript', 'Next.js', 'React', 'Tailwind CSS'],
 		backend: ['Node.js', 'Express.js', 'PostgreSQL', 'SQL', 'Supabase'],
 		tools: ['REST', 'Git'],
-		other: ['Python', 'Java', 'C++', 'Typescript']
+		other: ['Python', 'Java', 'C++', 'JavaScript']
 	};
 </script>
 
@@ -19,21 +19,23 @@
 </svelte:head>
 
 <div class="about-container os-glass">
-	<h1 class="about-title">About Me</h1>
+	<h1 class="about-title">Kevin Khuu</h1>
 
 	<div class="hero-section">
 		<div class="hero-content">
 			<!-- <h2 class="love-title">I <span class="heart">❤️</span> to build things</h2> -->
 			<p class="bio">
-				I'm an aspiring software engineer with a strong foundation in full-stack development,
-				distributed systems, and artificial intelligence. I have experience working on real-time web
-				applications, AI training, and game development, applying my skills across web, backend, and
-				game engines. Passionate about building scalable and efficient software, I enjoy tackling
-				complex problems and optimizing performance.
+				I'm a Software Engineer specializing in Full-Stack Development, Machine Learning, and AI systems. 
+				With expertise in TypeScript, React, Node.js, Python, and distributed systems, I build scalable 
+				web applications and AI-powered solutions. I have hands-on experience in real-time applications, 
+				RAG (Retrieval-Augmented Generation) pipelines, vector databases, and game development using Godot. 
+				My technical skills include web development, backend development, REST APIs, PostgreSQL, FastAPI, OpenAI integration, and performance optimization.
 			</p>
 			<p class="bio">
-				Currently pursuing my Master's in Computer Science at UT Austin online and based in Seattle,
-				WA. I'm eager to continue learning and growing as an engineer.
+				Currently pursuing my Master's in Computer Science at University of Texas at Austin online with a focus on 
+				AI. Based in Seattle, WA, I'm actively seeking Software Engineer, 
+				Full-Stack Developer, and Machine Learning Engineer opportunities where I can apply my technical expertise to solve 
+				complex problems and drive innovation. I'm open to both full-time and internship opportunities.
 			</p>
 			<a href="/resume.pdf" class="download-resume" download>Download Resume</a>
 		</div>
@@ -42,14 +44,9 @@
 		</div>
 	</div>
 
-	<h2 class="section-title">Details</h2>
 
 	<div class="details-section">
 		<div class="personal-info">
-			<div class="info-item">
-				<h3>Experience</h3>
-				<p>{techStack.experience}</p>
-			</div>
 			<div class="info-item">
 				<h3>Location</h3>
 				<p>{techStack.location}</p>
@@ -67,6 +64,52 @@
 						rel="noopener noreferrer">{techStack.github}</a
 					>
 				</p>
+			</div>
+			<div class="info-item">
+				<h3>LinkedIn</h3>
+				<p>
+					<a
+						href={`https://www.linkedin.com/in/${techStack.linkedin}`}
+						target="_blank"
+						rel="noopener noreferrer">{techStack.linkedin}</a
+					>
+				</p>
+			</div>
+		</div>
+
+		<h2 class="section-title">Technical Skills</h2>
+		<div class="stack-section">
+			<div class="stack-category">
+				<h3>Languages</h3>
+				<div class="tech-list">
+					{#each techStack.other as tech}
+						<span class="tech-badge">{tech}</span>
+					{/each}
+				</div>
+			</div>
+			<div class="stack-category">
+				<h3>Frontend</h3>
+				<div class="tech-list">
+					{#each techStack.frontend as tech}
+						<span class="tech-badge">{tech}</span>
+					{/each}
+				</div>
+			</div>
+			<div class="stack-category">
+				<h3>Backend</h3>
+				<div class="tech-list">
+					{#each techStack.backend as tech}
+						<span class="tech-badge">{tech}</span>
+					{/each}
+				</div>
+			</div>
+			<div class="stack-category">
+				<h3>Tools</h3>
+				<div class="tech-list">
+					{#each techStack.tools as tech}
+						<span class="tech-badge">{tech}</span>
+					{/each}
+				</div>
 			</div>
 		</div>
 
@@ -88,7 +131,11 @@
 							{/if}
 						</p>
 						<p class="period">{experience.period}</p>
-						<p class="description">{experience.description}</p>
+						<ul class="description">
+							{#each experience.description as bulletPoint}
+								<li>{bulletPoint}</li>
+							{/each}
+						</ul>
 					</div>
 				</div>
 			{/each}
@@ -106,46 +153,11 @@
 						<h3 class="degree-title">{edu.degree}</h3>
 						<p class="institution-name">{edu.institution}</p>
 						<p class="period">{edu.period}</p>
+						<p class="gpa">GPA: {edu.gpa}</p>
+						<p class="courses">Courses: {edu.courses.join(', ')}</p>
 					</div>
 				</div>
 			{/each}
-		</div>
-	</div>
-
-	<h2 class="section-title">Stack</h2>
-
-	<div class="stack-section">
-		<div class="stack-category">
-			<h3>Frontend</h3>
-			<div class="tech-list">
-				{#each techStack.frontend as tech}
-					<span class="tech-badge">{tech}</span>
-				{/each}
-			</div>
-		</div>
-		<div class="stack-category">
-			<h3>Backend</h3>
-			<div class="tech-list">
-				{#each techStack.backend as tech}
-					<span class="tech-badge">{tech}</span>
-				{/each}
-			</div>
-		</div>
-		<div class="stack-category">
-			<h3>Tools</h3>
-			<div class="tech-list">
-				{#each techStack.tools as tech}
-					<span class="tech-badge">{tech}</span>
-				{/each}
-			</div>
-		</div>
-		<div class="stack-category">
-			<h3>Other</h3>
-			<div class="tech-list">
-				{#each techStack.other as tech}
-					<span class="tech-badge">{tech}</span>
-				{/each}
-			</div>
 		</div>
 	</div>
 
@@ -306,6 +318,14 @@
 
 	.description {
 		line-height: 1.6;
+		margin: 0;
+		padding-left: 1.25rem;
+	}
+	.description li {
+		margin-bottom: 0.5rem;
+	}
+	.description li:last-child {
+		margin-bottom: 0;
 	}
 
 	.stack-section {

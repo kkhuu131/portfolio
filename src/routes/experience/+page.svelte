@@ -20,7 +20,11 @@ import { experiences } from '../../lib/desktop/apps/AboutData';
                     <h3 class="experience-title">{experience.title}</h3>
                     <p class="company-name">{experience.company}</p>
                     <p class="period">{experience.period}</p>
-                    <p class="description">{experience.description}</p>
+                    <ul class="description">
+                        {#each experience.description as bulletPoint}
+                            <li>{bulletPoint}</li>
+                        {/each}
+                    </ul>
                 </div>
             </div>
         {/each}
@@ -38,7 +42,9 @@ import { experiences } from '../../lib/desktop/apps/AboutData';
 .experience-title { font-weight: 600; margin-bottom: 0.25rem; }
 .company-name { color: #9ca3af; margin-bottom: 0.25rem; }
 .period { color: #9ca3af; font-size: 0.875rem; margin-bottom: 0.75rem; }
-.description { line-height: 1.6; }
+.description { line-height: 1.6; margin: 0; padding-left: 1.25rem; }
+.description li { margin-bottom: 0.5rem; }
+.description li:last-child { margin-bottom: 0; }
 </style>
 
 
