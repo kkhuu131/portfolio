@@ -2,9 +2,9 @@
 import { createEventDispatcher } from 'svelte';
 import { desktopStore } from './store';
 
-const dispatch = createEventDispatcher<{ openApp: 'resume' | 'projects' | 'about' | 'experience' | 'education' }>();
+const dispatch = createEventDispatcher<{ openApp: 'resume' | 'projects' | 'about' | 'experience' | 'education' | 'music' }>();
 
-function open(app: 'resume' | 'projects' | 'about' | 'experience' | 'education') {
+function open(app: 'resume' | 'projects' | 'about' | 'experience' | 'education' | 'music') {
 	dispatch('openApp', app);
 }
 </script>
@@ -31,6 +31,10 @@ function open(app: 'resume' | 'projects' | 'about' | 'experience' | 'education')
             <div class="dock-img-box"><img src="/document.png" alt="Resume" /></div>
             <span>Resume</span>
         </button>
+        <button class="dock-item" onclick={() => open('music')} aria-label="Music">
+            <div class="dock-img-box"><img src="/musicapp.png" alt="Music" /></div>
+            <span>Music</span>
+        </button>
     </div>
 </div>
 
@@ -50,9 +54,9 @@ function open(app: 'resume' | 'projects' | 'about' | 'experience' | 'education')
 	background: rgba(17, 24, 39, 0.5);
 	border: 1px solid rgba(255,255,255,0.1);
 	border-radius: 16px;
-	padding: 8px 10px;
+	padding: 12px 16px;
 	display: flex;
-	gap: 12px;
+	gap: 16px;
 	box-shadow: 0 10px 30px rgba(0,0,0,0.35);
 	pointer-events: auto;
 }
@@ -62,8 +66,8 @@ function open(app: 'resume' | 'projects' | 'about' | 'experience' | 'education')
 	background: transparent;
 	border: 0;
 	cursor: pointer;
-	padding: 6px;
-	border-radius: 12px;
+	padding: 8px;
+	border-radius: 16px;
 	transition: transform 120ms ease, background 120ms ease;
 }
 
@@ -72,16 +76,18 @@ function open(app: 'resume' | 'projects' | 'about' | 'experience' | 'education')
 	background: rgba(255,255,255,0.06);
 }
 
-.dock-img-box { width: 48px; height: 48px; display: grid; place-items: center; }
-.dock-item img { width: 100%; height: 100%; max-width: 48px; max-height: 48px; object-fit: contain; border-radius: 8px; transform-origin: center; }
+.dock-img-box { width: 60px; height: 60px; display: grid; place-items: center; }
+.dock-item img { width: 100%; height: 100%; max-width: 60px; max-height: 60px; object-fit: contain; border-radius: 8px; transform-origin: center; }
 /* Upscale folder icon slightly in dock as well */
 .dock-item img[src$="folder.webp"] { transform: scale(1.12); }
 
 .dock-item span {
     display: block;
-    font-size: 11px;
+    font-size: 13px;
+    font-family: 'Comic Neue', 'Comic Sans MS', cursive;
+    font-weight: 700;
     color: #e5e7eb;
-    margin-top: 4px;
+    margin-top: 6px;
 }
 </style>
 

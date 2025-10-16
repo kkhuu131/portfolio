@@ -1,6 +1,6 @@
 import { writable } from 'svelte/store';
 
-export type AppId = 'resume' | 'projects' | 'about' | 'experience' | 'education';
+export type AppId = 'resume' | 'projects' | 'about' | 'experience' | 'education' | 'music';
 
 export type DesktopWindow = {
 	id: string;
@@ -15,10 +15,11 @@ export type DesktopWindow = {
 type DesktopState = {
 	windows: DesktopWindow[];
 	activeZ: number;
+	selectedIcon: AppId | null;
 };
 
 function createDesktopStore() {
-    const { subscribe, update, set } = writable<DesktopState>({ windows: [], activeZ: 1 });
+    const { subscribe, update, set } = writable<DesktopState>({ windows: [], activeZ: 1, selectedIcon: null });
 
     const STORAGE_KEY = 'desktop-windows-v1';
 
@@ -126,7 +127,33 @@ function createDesktopStore() {
         } catch {}
     }
 
-    return { subscribe, open, close, focus, setBounds, toggleMinimize, loadPersisted };
+    function selectIcon(appId: AppId | null) {
+        update((state) => ({
+            ...state,
+            selectedIcon: appId
+        }));
+    }
+
+    function deselectIcon() {
+        update((state) => ({
+            ...state,
+            selectedIcon: null
+        }));
+    }
+
+    function handleIconClick(appId: AppId) {
+        update((state) => {
+            if (state.selectedIcon === appId) {
+                // Double click - open the app
+                return { ...state, selectedIcon: null };
+            } else {
+                // First click - select the icon
+                return { ...state, selectedIcon: appId };
+            }
+        });
+    }
+
+    return { subscribe, open, close, focus, setBounds, toggleMinimize, loadPersisted, selectIcon, deselectIcon, handleIconClick };
 }
 
 export const desktopStore = createDesktopStore();

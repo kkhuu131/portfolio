@@ -3,7 +3,7 @@ import { experiences } from '../../lib/desktop/apps/AboutData';
 </script>
 
 <svelte:head>
-    <title>Experience | Kevin Khuu</title>
+    <title>Kevin Khuu</title>
     <meta name="description" content="Professional experience" />
 </svelte:head>
 

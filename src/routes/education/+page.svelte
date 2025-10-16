@@ -3,7 +3,7 @@ import { education } from '../../lib/desktop/apps/AboutData';
 </script>
 
 <svelte:head>
-    <title>Education | Kevin Khuu</title>
+    <title>Kevin Khuu</title>
     <meta name="description" content="Education" />
 </svelte:head>
 

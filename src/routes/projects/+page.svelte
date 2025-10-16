@@ -52,7 +52,7 @@
 </script>
 
 <svelte:head>
-	<title>Projects | Kevin Khuu</title>
+	<title>Kevin Khuu</title>
 	<meta name="description" content="Projects by Kevin Khuu" />
 </svelte:head>
 

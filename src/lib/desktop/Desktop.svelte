@@ -2,19 +2,39 @@
 import { onMount } from 'svelte';
 import Dock from './Dock.svelte';
 import Window from './Window.svelte';
-import { desktopStore, type DesktopWindow } from './store';
+import { desktopStore, type DesktopWindow, type AppId } from './store';
 
 let windows: DesktopWindow[] = [];
-const unsubscribe = desktopStore.subscribe((state) => (windows = state.windows));
+let selectedIcon: AppId | null = null;
+const unsubscribe = desktopStore.subscribe((state) => {
+    windows = state.windows;
+    selectedIcon = state.selectedIcon;
+});
 
 onMount(() => {
     desktopStore.loadPersisted();
     return () => unsubscribe();
 });
 
-function openApp(appId: 'resume' | 'projects' | 'about' | 'experience' | 'education') {
-    const title = appId === 'resume' ? 'Resume.pdf' : appId === 'projects' ? 'Projects' : appId === 'about' ? 'About Me' : appId === 'experience' ? 'Experience' : 'Education';
+function handleIconClick(appId: AppId, event: MouseEvent) {
+    event.stopPropagation();
+    
+    if (selectedIcon === appId) {
+        // Double click - open the app
+        openApp(appId);
+    } else {
+        // First click - select the icon
+        desktopStore.selectIcon(appId);
+    }
+}
+
+function openApp(appId: AppId) {
+    const title = appId === 'resume' ? 'Resume.pdf' : appId === 'projects' ? 'Projects' : appId === 'about' ? 'About Me' : appId === 'experience' ? 'Experience' : appId === 'education' ? 'Education' : 'Music Player';
 	desktopStore.open(appId, title);
+}
+
+function handleDesktopClick() {
+    desktopStore.deselectIcon();
 }
 
 let isMobile = false;
@@ -26,30 +46,34 @@ onMount(() => {
 });
 </script>
 
-<div class="desktop" role="application" oncontextmenu={(e) => e.preventDefault()}>
+<div class="desktop" role="application" oncontextmenu={(e) => e.preventDefault()} onclick={handleDesktopClick}>
     <div class="wallpaper"></div>
 
 	<!-- Desktop icons (minimal) -->
     <div class="icons">
-        <button class="icon" onclick={() => openApp('resume')}>
+        <button class="icon" class:selected={selectedIcon === 'resume'} onclick={(e) => handleIconClick('resume', e)}>
             <div class="icon-img-box"><img alt="Resume" src="/document.png" /></div>
 			<span>Resume.pdf</span>
 		</button>
-        <button class="icon" onclick={() => openApp('projects')}>
-            <div class="icon-img-box"><img alt="Projects" src="/folder.webp" /></div>
-			<span>Projects</span>
-		</button>
-        <button class="icon" onclick={() => openApp('about')}>
+		<button class="icon" class:selected={selectedIcon === 'about'} onclick={(e) => handleIconClick('about', e)}>
             <div class="icon-img-box"><img alt="About" src="/folder.webp" /></div>
 			<span>About</span>
 		</button>
-        <button class="icon" onclick={() => openApp('experience')}>
+        <button class="icon" class:selected={selectedIcon === 'projects'} onclick={(e) => handleIconClick('projects', e)}>
+            <div class="icon-img-box"><img alt="Projects" src="/folder.webp" /></div>
+			<span>Projects</span>
+		</button>
+        <button class="icon" class:selected={selectedIcon === 'experience'} onclick={(e) => handleIconClick('experience', e)}>
             <div class="icon-img-box"><img alt="Experience" src="/folder.webp" /></div>
             <span>Experience</span>
         </button>
-        <button class="icon" onclick={() => openApp('education')}>
+        <button class="icon" class:selected={selectedIcon === 'education'} onclick={(e) => handleIconClick('education', e)}>
             <div class="icon-img-box"><img alt="Education" src="/folder.webp" /></div>
             <span>Education</span>
+        </button>
+        <button class="icon" class:selected={selectedIcon === 'music'} onclick={(e) => handleIconClick('music', e)}>
+            <div class="icon-img-box"><img alt="Music" src="/musicapp.png" /></div>
+            <span>Music</span>
         </button>
 	</div>
 
@@ -89,31 +113,47 @@ onMount(() => {
 	position: absolute;
 	top: 24px;
 	left: 24px;
-	display: grid;
-	grid-template-columns: repeat(2, 96px);
-	gap: 16px 24px;
+	display: flex;
+	flex-direction: column;
+	flex-wrap: wrap;
+	max-height: calc(100vh - 48px);
+	gap: 20px;
+	width: fit-content;
 }
 
 .icon {
 	appearance: none;
 	background: transparent;
 	border: 0;
-	width: 96px;
+	width: 100px;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	gap: 8px;
+	gap: 4px;
 	color: #e5e7eb;
 	cursor: pointer;
+	border-radius: 8px;
+	padding: 4px;
+	transition: background-color 0.15s ease;
 }
 
-.icon-img-box { width: 64px; height: 64px; display: grid; place-items: center; overflow: visible; }
-.icon img { width: 100%; height: 100%; max-width: 64px; max-height: 64px; object-fit: contain; border-radius: 8px; background: rgba(255,255,255,0.08); backdrop-filter: blur(2px); transform-origin: center; }
-/* Slightly upscale folder.webp to compensate for transparent margins in the asset */
+.icon:hover {
+	background: rgba(255, 255, 255, 0.05);
+}
+
+.icon.selected {
+	background: rgba(59, 130, 246, 0.3);
+
+}
+
+.icon-img-box { width: 80px; height: 80px; display: grid; place-items: center; overflow: visible; }
+.icon img { width: 100%; height: 100%; max-width: 70px; max-height: 70px; object-fit: contain; border-radius: 8px; background: rgba(255,255,255,0.00); backdrop-filter: blur(2px); transform-origin: center; }
 .icon img[src$="folder.webp"] { transform: scale(1.15); }
 
 .icon span {
-	font-size: 12px;
+	font-size: 14px;
+	font-family: 'Comic Neue', 'Comic Sans MS', cursive;
+	font-weight: 700;
 	text-shadow: 0 1px 2px rgba(0,0,0,0.6);
 }
 

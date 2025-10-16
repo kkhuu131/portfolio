@@ -14,7 +14,7 @@
 </script>
 
 <svelte:head>
-	<title>About Me | Kevin Khuu</title>
+	<title>Kevin Khuu</title>
 	<meta name="description" content="About Kevin Khuu - Software Engineer" />
 </svelte:head>
 

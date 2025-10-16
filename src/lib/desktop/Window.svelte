@@ -5,6 +5,7 @@ import ProjectsApp from './apps/ProjectsApp.svelte';
 import AboutApp from './apps/AboutApp.svelte';
 import ExperienceApp from './apps/ExperienceApp.svelte';
 import EducationApp from './apps/EducationApp.svelte';
+import MusicApp from './apps/MusicApp.svelte';
 
 export let win: DesktopWindow;
 
@@ -25,7 +26,22 @@ function onMouseDownHeader(e: MouseEvent) {
 function onMove(e: MouseEvent) {
 	const dx = e.clientX - startX;
 	const dy = e.clientY - startY;
-	desktopStore.setBounds(win.id, { x: startBounds.x + dx, y: startBounds.y + dy });
+	
+	// Calculate new position
+	let newX = startBounds.x + dx;
+	let newY = startBounds.y + dy;
+	
+	// Apply boundary constraints
+	const minX = 0; // Don't go off the left edge
+	const maxX = window.innerWidth - win.bounds.w; // Don't go off the right edge
+	const minY = 0; // Don't go above the top edge
+	const maxY = window.innerHeight - win.bounds.h; // Don't go below the bottom edge
+	
+	// Clamp the position within bounds
+	newX = Math.max(minX, Math.min(maxX, newX));
+	newY = Math.max(minY, Math.min(maxY, newY));
+	
+	desktopStore.setBounds(win.id, { x: newX, y: newY });
 }
 
 function onUp() {
@@ -43,8 +59,21 @@ function resizeFrom(corner: 'se' | 'e' | 's') {
 			const dx = ev.clientX - startX;
 			const dy = ev.clientY - startY;
 			const next: Partial<DesktopWindow['bounds']> = {};
-			if (corner === 'se' || corner === 'e') next.w = Math.max(320, startBounds.w + dx);
-			if (corner === 'se' || corner === 's') next.h = Math.max(220, startBounds.h + dy);
+			
+			if (corner === 'se' || corner === 'e') {
+				const newWidth = Math.max(320, startBounds.w + dx);
+				// Ensure window doesn't go off the right edge
+				const maxWidth = window.innerWidth - startBounds.x;
+				next.w = Math.min(newWidth, maxWidth);
+			}
+			
+			if (corner === 'se' || corner === 's') {
+				const newHeight = Math.max(220, startBounds.h + dy);
+				// Ensure window doesn't go off the bottom edge
+				const maxHeight = window.innerHeight - startBounds.y;
+				next.h = Math.min(newHeight, maxHeight);
+			}
+			
 			desktopStore.setBounds(win.id, next);
 		}
 		function up() {
@@ -100,6 +129,8 @@ function toggleMaximize() {
             <ExperienceApp />
         {:else if win.appId === 'education'}
             <EducationApp />
+        {:else if win.appId === 'music'}
+            <MusicApp />
 		{/if}
 	</div>
     <div class="resize se" role="separator" aria-label="Resize" on:mousedown={resizeFrom('se')}></div>
