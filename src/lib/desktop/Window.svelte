@@ -6,12 +6,15 @@ import AboutApp from './apps/AboutApp.svelte';
 import ExperienceApp from './apps/ExperienceApp.svelte';
 import EducationApp from './apps/EducationApp.svelte';
 import MusicApp from './apps/MusicApp.svelte';
+import WebApp from './apps/WebApp.svelte';
 
 export let win: DesktopWindow;
 
 let startX = 0;
 let startY = 0;
 let startBounds = { x: 0, y: 0, w: 0, h: 0 };
+let isDragging = false;
+let isResizing = false;
 
 function onMouseDownHeader(e: MouseEvent) {
 	if ((e.target as HTMLElement).closest('.controls')) return;
@@ -19,6 +22,7 @@ function onMouseDownHeader(e: MouseEvent) {
 	startX = e.clientX;
 	startY = e.clientY;
 	startBounds = { ...win.bounds };
+    isDragging = true;
 	window.addEventListener('mousemove', onMove);
 	window.addEventListener('mouseup', onUp);
 }
@@ -41,20 +45,24 @@ function onMove(e: MouseEvent) {
 	newX = Math.max(minX, Math.min(maxX, newX));
 	newY = Math.max(minY, Math.min(maxY, newY));
 	
-	desktopStore.setBounds(win.id, { x: newX, y: newY });
+    desktopStore.setBounds(win.id, { x: newX, y: newY }, { persist: false });
 }
 
 function onUp() {
 	window.removeEventListener('mousemove', onMove);
 	window.removeEventListener('mouseup', onUp);
+    isDragging = false;
+    // Persist final position once at the end
+    desktopStore.setBounds(win.id, { x: win.bounds.x, y: win.bounds.y }, { persist: true });
 }
 
 function resizeFrom(corner: 'se' | 'e' | 's') {
-	return (e: MouseEvent) => {
+    return (e: MouseEvent) => {
 		desktopStore.focus(win.id);
 		startX = e.clientX;
 		startY = e.clientY;
 		startBounds = { ...win.bounds };
+        isResizing = true;
 		function move(ev: MouseEvent) {
 			const dx = ev.clientX - startX;
 			const dy = ev.clientY - startY;
@@ -74,11 +82,18 @@ function resizeFrom(corner: 'se' | 'e' | 's') {
 				next.h = Math.min(newHeight, maxHeight);
 			}
 			
-			desktopStore.setBounds(win.id, next);
+            desktopStore.setBounds(win.id, next, { persist: false });
 		}
 		function up() {
 			window.removeEventListener('mousemove', move);
 			window.removeEventListener('mouseup', up);
+            isResizing = false;
+            // Persist final size once at the end
+            desktopStore.setBounds(
+                win.id,
+                { w: win.bounds.w, h: win.bounds.h },
+                { persist: true }
+            );
 		}
 		window.addEventListener('mousemove', move);
 		window.addEventListener('mouseup', up);
@@ -108,7 +123,7 @@ function toggleMaximize() {
 }
 </script>
 
-<div class="window" role="dialog" tabindex="0" aria-label={win.title} class:minimized={win.minimized} on:mousedown={focus} style={`z-index:${win.zIndex}; transform: translate(${win.bounds.x}px, ${win.bounds.y}px) scale(${win.minimized ? 0.92 : 1}); opacity:${win.minimized ? 0 : 1}; width:${win.bounds.w}px; height:${win.bounds.h}px;`}>
+<div class="window" role="dialog" tabindex="0" aria-label={win.title} class:minimized={win.minimized} class:dragging={isDragging || isResizing} on:mousedown={focus} style={`z-index:${win.zIndex}; transform: translate(${win.bounds.x}px, ${win.bounds.y}px) scale(${win.minimized ? 0.92 : 1}); opacity:${win.minimized ? 0 : 1}; width:${win.bounds.w}px; height:${win.bounds.h}px;`}>
     <div class="titlebar" role="toolbar" tabindex="0" on:mousedown={onMouseDownHeader}>
         <div class="traffic">
             <button class="dot close" aria-label="Close" on:click|stopPropagation={close}></button>
@@ -131,6 +146,8 @@ function toggleMaximize() {
             <EducationApp />
         {:else if win.appId === 'music'}
             <MusicApp />
+        {:else if win.appId === 'web'}
+            <WebApp url={win.url ?? ''} />
 		{/if}
 	</div>
     <div class="resize se" role="separator" aria-label="Resize" on:mousedown={resizeFrom('se')}></div>
@@ -149,6 +166,7 @@ function toggleMaximize() {
 	overflow: hidden;
     transition: opacity 160ms ease, transform 180ms ease;
 }
+.window.dragging { transition: none; }
 .window.minimized { pointer-events: none; }
 
 .titlebar {
@@ -161,7 +179,7 @@ function toggleMaximize() {
 }
 
 .traffic { display: flex; gap: 8px; }
-.dot { width: 12px; height: 12px; border-radius: 999px; border: 1px solid rgba(0,0,0,0.25); background: #4b5563; }
+.dot { width: 12px; height: 12px; aspect-ratio: 1 / 1; display: inline-block; padding: 0; appearance: none; border-radius: 999px; border: 1px solid rgba(0,0,0,0.25); background: #4b5563; flex: 0 0 auto; }
 .dot.close { background: #ff5f57; }
 .dot.minimize { background: #ffbd2e; }
 .dot.zoom { background: #28c840; }

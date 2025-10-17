@@ -5,7 +5,11 @@ import { desktopStore } from './store';
 const dispatch = createEventDispatcher<{ openApp: 'resume' | 'projects' | 'about' | 'experience' | 'education' | 'music' }>();
 
 function open(app: 'resume' | 'projects' | 'about' | 'experience' | 'education' | 'music') {
-	dispatch('openApp', app);
+    dispatch('openApp', app);
+}
+
+function openDigitask() {
+    desktopStore.openWeb('https://digitask-pi.vercel.app/', 'Digitask', { w: 1100, h: 720 });
 }
 </script>
 
@@ -34,6 +38,10 @@ function open(app: 'resume' | 'projects' | 'about' | 'experience' | 'education' 
         <button class="dock-item" onclick={() => open('music')} aria-label="Music">
             <div class="dock-img-box"><img src="/musicapp.png" alt="Music" /></div>
             <span>Music</span>
+        </button>
+        <button class="dock-item" onclick={openDigitask} aria-label="Digitask">
+            <div class="dock-img-box"><img src="/digitask_icon.png" alt="Digitask" /></div>
+            <span>Digitask</span>
         </button>
     </div>
 </div>
@@ -80,6 +88,8 @@ function open(app: 'resume' | 'projects' | 'about' | 'experience' | 'education' 
 .dock-item img { width: 100%; height: 100%; max-width: 60px; max-height: 60px; object-fit: contain; border-radius: 8px; transform-origin: center; }
 /* Upscale folder icon slightly in dock as well */
 .dock-item img[src$="folder.webp"] { transform: scale(1.12); }
+/* Preserve sharp pixel look for 32x32 icons like Digitask */
+.dock-item img[src$="digitask_icon.png"] { image-rendering: pixelated; image-rendering: crisp-edges; }
 
 .dock-item span {
     display: block;

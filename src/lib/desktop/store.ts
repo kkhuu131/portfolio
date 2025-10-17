@@ -1,6 +1,6 @@
 import { writable } from 'svelte/store';
 
-export type AppId = 'resume' | 'projects' | 'about' | 'experience' | 'education' | 'music';
+export type AppId = 'resume' | 'projects' | 'about' | 'experience' | 'education' | 'music' | 'web';
 
 export type DesktopWindow = {
 	id: string;
@@ -10,6 +10,7 @@ export type DesktopWindow = {
 	minimized: boolean;
 	focused: boolean;
 	bounds: { x: number; y: number; w: number; h: number };
+    url?: string; // for 'web' app windows
 };
 
 type DesktopState = {
@@ -30,7 +31,8 @@ function createDesktopStore() {
                 appId: w.appId,
                 title: w.title,
                 bounds: w.bounds,
-                minimized: w.minimized
+                minimized: w.minimized,
+                url: w.url
             }));
             localStorage.setItem(STORAGE_KEY, JSON.stringify(snapshot));
         } catch {}
@@ -40,11 +42,15 @@ function createDesktopStore() {
 		let newId = `${appId}-${Date.now()}`;
         update((state) => {
 			const nextZ = state.activeZ + 1;
+            const defaultW = initialBounds?.w ?? 960;
+            const defaultH = initialBounds?.h ?? 640;
+            const centeredX = Math.max(0, Math.floor((window.innerWidth - defaultW) / 2));
+            const centeredY = Math.max(0, Math.floor((window.innerHeight - defaultH) / 2));
             const bounds = {
-                x: initialBounds?.x ?? 80 + (state.windows.length * 24) % 200,
-                y: initialBounds?.y ?? 80 + (state.windows.length * 24) % 200,
-                w: initialBounds?.w ?? 960,
-                h: initialBounds?.h ?? 640
+                x: initialBounds?.x ?? centeredX,
+                y: initialBounds?.y ?? centeredY,
+                w: defaultW,
+                h: defaultH
             };
 			const win: DesktopWindow = {
 				id: newId,
@@ -86,16 +92,18 @@ function createDesktopStore() {
 		});
 	}
 
-    function setBounds(id: string, bounds: Partial<DesktopWindow['bounds']>) {
+    function setBounds(id: string, bounds: Partial<DesktopWindow['bounds']>, options?: { persist?: boolean }) {
         update((state) => {
             const next = {
                 ...state,
                 windows: state.windows.map((w) => (w.id === id ? { ...w, bounds: { ...w.bounds, ...bounds } } : w))
             };
-            persist(next);
+            if (options?.persist !== false) {
+                persist(next);
+            }
             return next;
         });
-	}
+    }
 
     function toggleMinimize(id: string) {
         update((state) => {
@@ -112,7 +120,7 @@ function createDesktopStore() {
         try {
             const raw = localStorage.getItem(STORAGE_KEY);
             if (!raw) return;
-            const parsed: Array<Pick<DesktopWindow, 'id' | 'appId' | 'title' | 'bounds' | 'minimized'>> = JSON.parse(raw);
+            const parsed: Array<Pick<DesktopWindow, 'id' | 'appId' | 'title' | 'bounds' | 'minimized' | 'url'>> = JSON.parse(raw);
             let z = 1;
             const windows: DesktopWindow[] = parsed.map((p) => ({
                 id: p.id,
@@ -121,7 +129,8 @@ function createDesktopStore() {
                 bounds: p.bounds,
                 minimized: p.minimized ?? false,
                 focused: false,
-                zIndex: ++z
+                zIndex: ++z,
+                url: p.url
             }));
             set({ windows, activeZ: z });
         } catch {}
@@ -153,7 +162,37 @@ function createDesktopStore() {
         });
     }
 
-    return { subscribe, open, close, focus, setBounds, toggleMinimize, loadPersisted, selectIcon, deselectIcon, handleIconClick };
+    function openWeb(url: string, title?: string, initialBounds?: Partial<DesktopWindow['bounds']>) {
+        const computedTitle = title ?? new URL(url).hostname;
+        let newId = `web-${Date.now()}`;
+        update((state) => {
+            const nextZ = state.activeZ + 1;
+            const bounds = {
+                x: initialBounds?.x ?? 100,
+                y: initialBounds?.y ?? 100,
+                w: initialBounds?.w ?? Math.min(window.innerWidth - 40, 1100),
+                h: initialBounds?.h ?? Math.min(window.innerHeight - 100, 720)
+            };
+            const win: DesktopWindow = {
+                id: newId,
+                appId: 'web',
+                title: computedTitle,
+                zIndex: nextZ,
+                minimized: false,
+                focused: true,
+                bounds,
+                url
+            };
+            const windows = state.windows.map((w) => ({ ...w, focused: false }));
+            windows.push(win);
+            const next = { windows, activeZ: nextZ };
+            persist(next);
+            return next;
+        });
+        return newId;
+    }
+
+    return { subscribe, open, close, focus, setBounds, toggleMinimize, loadPersisted, selectIcon, deselectIcon, handleIconClick, openWeb };
 }
 
 export const desktopStore = createDesktopStore();

@@ -33,6 +33,10 @@ function openApp(appId: AppId) {
 	desktopStore.open(appId, title);
 }
 
+function openDigitask() {
+	desktopStore.openWeb('https://digitask-pi.vercel.app/', 'Digitask', { w: 1100, h: 720 });
+}
+
 function handleDesktopClick() {
     desktopStore.deselectIcon();
 }
@@ -75,6 +79,10 @@ onMount(() => {
             <div class="icon-img-box"><img alt="Music" src="/musicapp.png" /></div>
             <span>Music</span>
         </button>
+		<button class="icon" onclick={(e) => { e.stopPropagation(); openDigitask(); }}>
+			<div class="icon-img-box"><img alt="Digitask" src="/digitask_icon.png" /></div>
+			<span>Digitask</span>
+		</button>
 	</div>
 
 	<!-- Windows -->
@@ -149,6 +157,8 @@ onMount(() => {
 .icon-img-box { width: 80px; height: 80px; display: grid; place-items: center; overflow: visible; }
 .icon img { width: 100%; height: 100%; max-width: 70px; max-height: 70px; object-fit: contain; border-radius: 8px; background: rgba(255,255,255,0.00); backdrop-filter: blur(2px); transform-origin: center; }
 .icon img[src$="folder.webp"] { transform: scale(1.15); }
+/* Preserve sharp pixel look for 32x32 icons like Digitask */
+.icon img[src$="digitask_icon.png"] { image-rendering: pixelated; image-rendering: crisp-edges; }
 
 .icon span {
 	font-size: 14px;

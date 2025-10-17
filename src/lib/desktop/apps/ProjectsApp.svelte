@@ -22,7 +22,7 @@
 	};
 
 	const handleExternalClick = (url: string) => {
-		window.open(url, '_blank', 'noopener,noreferrer');
+		desktopStore.openWeb(url);
 	};
 </script>
 
@@ -80,12 +80,12 @@
 								
 
 								{#if project.liveUrl}
-									<a
+								<a
 										href={project.liveUrl}
 										target="_blank"
 										rel="noopener noreferrer"
 										class="project-link live-link"
-										on:click|stopPropagation={() => handleExternalClick(project.liveUrl!)}
+									on:click|preventDefault|stopPropagation={() => handleExternalClick(project.liveUrl!)}
 									>
 										<svg
 											xmlns="http://www.w3.org/2000/svg"
@@ -107,12 +107,12 @@
 									</a>
 								{/if}
 								{#if project.githubUrl}
-									<a
+								<a
 										href={project.githubUrl}
 										target="_blank"
 										rel="noopener noreferrer"
 										class="project-link github-link"
-										on:click|stopPropagation={() => handleExternalClick(project.githubUrl!)}
+									on:click|preventDefault|stopPropagation={() => handleExternalClick(project.githubUrl!)}
 									>
 										<svg
 											xmlns="http://www.w3.org/2000/svg"
