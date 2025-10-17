@@ -1,6 +1,6 @@
 import { writable } from 'svelte/store';
 
-export type AppId = 'resume' | 'projects' | 'about' | 'experience' | 'education' | 'music' | 'web';
+export type AppId = 'resume' | 'projects' | 'about' | 'experience' | 'education' | 'music' | 'web' | 'digitask';
 
 export type DesktopWindow = {
 	id: string;
@@ -167,11 +167,15 @@ function createDesktopStore() {
         let newId = `web-${Date.now()}`;
         update((state) => {
             const nextZ = state.activeZ + 1;
+            const defaultW = initialBounds?.w ?? 960;
+            const defaultH = initialBounds?.h ?? 640;
+            const centeredX = Math.max(0, Math.floor((window.innerWidth - defaultW) / 2));
+            const centeredY = Math.max(0, Math.floor((window.innerHeight - defaultH) / 2));
             const bounds = {
-                x: initialBounds?.x ?? 100,
-                y: initialBounds?.y ?? 100,
-                w: initialBounds?.w ?? Math.min(window.innerWidth - 40, 1100),
-                h: initialBounds?.h ?? Math.min(window.innerHeight - 100, 720)
+                x: initialBounds?.x ?? centeredX,
+                y: initialBounds?.y ?? centeredY,
+                w: defaultW,
+                h: defaultH
             };
             const win: DesktopWindow = {
                 id: newId,

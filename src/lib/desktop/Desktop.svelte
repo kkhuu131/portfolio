@@ -29,12 +29,16 @@ function handleIconClick(appId: AppId, event: MouseEvent) {
 }
 
 function openApp(appId: AppId) {
-    const title = appId === 'resume' ? 'Resume.pdf' : appId === 'projects' ? 'Projects' : appId === 'about' ? 'About Me' : appId === 'experience' ? 'Experience' : appId === 'education' ? 'Education' : 'Music Player';
-	desktopStore.open(appId, title);
+    const title = appId === 'resume' ? 'Resume.pdf' : appId === 'projects' ? 'Projects' : appId === 'about' ? 'About Me' : appId === 'experience' ? 'Experience' : appId === 'education' ? 'Education' : appId === 'digitask' ? 'Digitask' : 'Music Player';
+	if (appId === 'digitask') {
+		openDigitask();
+	} else {
+		desktopStore.open(appId, title);
+	}
 }
 
 function openDigitask() {
-	desktopStore.openWeb('https://digitask-pi.vercel.app/', 'Digitask', { w: 1100, h: 720 });
+	desktopStore.openWeb('https://digitask-pi.vercel.app/', 'Digitask');
 }
 
 function handleDesktopClick() {
@@ -79,7 +83,7 @@ onMount(() => {
             <div class="icon-img-box"><img alt="Music" src="/musicapp.png" /></div>
             <span>Music</span>
         </button>
-		<button class="icon" onclick={(e) => { e.stopPropagation(); openDigitask(); }}>
+		<button class="icon" class:selected={selectedIcon === 'digitask'} onclick={(e) => handleIconClick('digitask', e)}>
 			<div class="icon-img-box"><img alt="Digitask" src="/digitask_icon.png" /></div>
 			<span>Digitask</span>
 		</button>
